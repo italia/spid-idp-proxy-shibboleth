@@ -1,0 +1,175 @@
+<AttributeDefinition id="spid_REMOTE_USER" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+    <AttributeEncoder xsi:type="SAML2String" name="spid_REMOTE_USER" friendlyName="spid_REMOTE_USER"/>
+    <Script><![CDATA[
+                if (custom.getHeader("spid_REMOTE_USER") != ""  && custom.getHeader("spid_REMOTE_USER") != "(null)" ) {
+                        spid_REMOTE_USER.addValue(custom.getHeader("spid_REMOTE_USER"));
+                }  else {
+                        spid_REMOTE_USER.addValue(null);
+                }
+
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_name" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_name" friendlyName="spid_name"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_name") != ""  && custom.getHeader("spid_name") != "(null)" ) {
+                        spid_name.addValue(custom.getHeader("spid_name"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_familyName" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_familyName" friendlyName="spid_familyName"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_familyName") != ""  && custom.getHeader("spid_familyName") != "(null)" ) {
+                        spid_familyName.addValue(custom.getHeader("spid_familyName"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_fiscalNumber" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_fiscalNumber" friendlyName="spid_fiscalNumber"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_fiscalNumber") != ""  && custom.getHeader("spid_fiscalNumber") != "(null)" ) {
+                        spid_fiscalNumber.addValue(custom.getHeader("spid_fiscalNumber"));
+                } else {
+                        spid_fiscalNumber.addValue(null);
+		}
+        ]]></Script>
+</AttributeDefinition>
+<AttributeDefinition id="spid_email" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_email" friendlyName="spid_email"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_email") != ""  && custom.getHeader("spid_email") != "(null)" ) {
+                        spid_email.addValue(custom.getHeader("spid_email"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_spidCode" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_spidCode" friendlyName="spid_spidCode"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_spidCode") != ""  && custom.getHeader("spid_spidCode") != "(null)" ) {
+                        spid_spidCode.addValue(custom.getHeader("spid_spidCode"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_gender" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_gender" friendlyName="spid_gender"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_gender") != ""  && custom.getHeader("spid_gender") != "(null)" ) {
+                        spid_gender.addValue(custom.getHeader("spid_gender"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_placeOfBirth" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_placeOfBirth" friendlyName="spid_placeOfBirth"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_placeOfBirth") != ""  && custom.getHeader("spid_placeOfBirth") != "(null)" ) {
+                        spid_placeOfBirth.addValue(custom.getHeader("spid_placeOfBirth"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_countyOfBirth" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_countyOfBirth" friendlyName="spid_countyOfBirth"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_countyOfBirth") != ""  && custom.getHeader("spid_countyOfBirth") != "(null)" ) {
+                        spid_countyOfBirth.addValue(custom.getHeader("spid_countyOfBirth"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_dateOfBirth" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_dateOfBirth" friendlyName="spid_dateOfBirth"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_dateOfBirth") != ""  && custom.getHeader("spid_dateOfBirth") != "(null)" ) {
+                        spid_dateOfBirth.addValue(custom.getHeader("spid_dateOfBirth"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_mobilePhone" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_mobilePhone" friendlyName="spid_mobilePhone"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_mobilePhone") != ""  && custom.getHeader("spid_mobilePhone") != "(null)" ) {
+                        spid_mobilePhone.addValue(custom.getHeader("spid_mobilePhone"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_address" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_address" friendlyName="spid_address"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_address") != ""  && custom.getHeader("spid_address") != "(null)" ) {
+                        spid_address.addValue(custom.getHeader("spid_address"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_digitalAddress" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_digitalAddress" friendlyName="spid_digitalAddress"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_digitalAddress") != ""  && custom.getHeader("spid_digitalAddress") != "(null)" ) {
+                        spid_digitalAddress.addValue(custom.getHeader("spid_digitalAddress"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+
+<AttributeDefinition id="spid_domicileStreetAddress" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_domicileStreetAddress" friendlyName="spid_domicileStreetAddress"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_domicileStreetAddress") != ""  && custom.getHeader("spid_domicileStreetAddress") != "(null)" ) {
+                        spid_domicileStreetAddress.addValue(custom.getHeader("spid_domicileStreetAddress"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_domicilePostalCode" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_domicilePostalCode" friendlyName="spid_domicilePostalCode"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_domicilePostalCode") != ""  && custom.getHeader("spid_domicilePostalCode") != "(null)" ) {
+                        spid_domicilePostalCode.addValue(custom.getHeader("spid_domicilePostalCode"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_domicileMunicipality" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_domicileMunicipality" friendlyName="spid_domicileMunicipality"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_domicileMunicipality") != ""  && custom.getHeader("spid_domicileMunicipality") != "(null)" ) {
+                        spid_domicileMunicipality.addValue(custom.getHeader("spid_domicileMunicipality"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_domicileProvince" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_domicileProvince" friendlyName="spid_domicileProvince"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_domicileProvince") != ""  && custom.getHeader("spid_domicileProvince") != "(null)" ) {
+                        spid_domicileProvince.addValue(custom.getHeader("spid_domicileProvince"));
+                }
+        ]]></Script>
+</AttributeDefinition>
+
+<AttributeDefinition id="spid_domicileNation" xsi:type="ScriptedAttribute"
+                     customObjectRef="shibboleth.HttpServletRequest">
+<AttributeEncoder xsi:type="SAML2String" name="spid_domicileNation" friendlyName="spid_domicileNation"/>
+<Script><![CDATA[
+                if (custom.getHeader("spid_domicileNation") != ""  && custom.getHeader("spid_domicileNation") != "(null)" ) {
+                        spid_domicileNation.addValue(custom.getHeader("spid_domicileNation"));
+                }
+        ]]></Script>
+</AttributeDefinition>

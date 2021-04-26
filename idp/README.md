@@ -1,0 +1,140 @@
+# Configurazione Identity Provider interno
+
+L'IDP interno va configurato in modo da supportare un metodo di autenticazione aggiuntivo a quello usato normalmente 
+dall'ente.
+
+Di seguito vengono quindi illustrati i passi necessari per la sola delega dell'autenticazione agli IDP SPID.
+
+Il meccanismo usato sfrutta il flusso _multi-factor-authentication_ di SPID per delegare l'autenticazione ad una risorsa
+esterna.
+
+I passi da effettuare sono i seguenti:
+
+- [Aggiunta del flusso di autenticazione esterna](#aggiunta-del-flusso-di-autenticazione-esterna);
+- [Reperimento degli attributi SPID dall'SP interno](#reperimento-degli-attributi-spid-dall-sp-interno);
+- [Rilascio degli attributi SPID](#rilascio-degli-attributi-spid);
+
+## Aggiunta del flusso di autenticazione esterna
+
+Shibboleth permette di lanciare degli eventi dal form di login, i quali possono essere catturati per differenziare il 
+flusso di autenticazione da seguire. In questo caso, possiamo definire l'evento `SPID_auth` come trigger per la delega 
+dell'autenticazione al flusso `RemoteUserInternal`, che a sua volta avvia il flusso di autenticazione presso gli IDP SPID.
+
+- Modifica della configurazione _MFA_ (file `$IDP_HOME/conf/authn/mfa-authn-config.xml`)
+```
+<!-- $IDP_HOME/conf/authn/mfa-authn-config.xml -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+                           
+       default-init-method="initialize"
+       default-destroy-method="destroy">
+    
+<util:map id="shibboleth.authn.MFA.TransitionMap">
+
+	<entry key="">
+        <bean parent="shibboleth.authn.MFA.Transition" p:nextFlow="authn/Password" />
+    </entry>
+
+    <entry key="authn/Password">
+        <bean parent="shibboleth.authn.MFA.Transition"> 
+            <property name="nextFlowStrategyMap">
+                <map>
+                    <entry key="SPID_auth" value="authn/RemoteUser" />
+                </map>
+            </property>
+        </bean>
+    </entry> 
+ 
+    <entry key="authn/RemoteUser"  >
+        <bean parent="shibboleth.authn.MFA.Transition"/>
+    </entry>
+
+</util:map>
+
+</beans>
+```
+
+- Modifica del flusso _MFA_ (file `$IDP_HOME/conf/authn/mfa-events-flow.xml`)
+
+```
+<!-- $IDP_HOME/conf/authn/mfa-events-flow.xml -->
+
+    <end-state id="SPID_auth" />
+
+    <global-transitions>
+        <transition on="SPID_auth" to="SPID_auth" />
+    </global-transitions>
+```
+
+- Abilitazione del flusso MFA e RemoteUserInternal sulla configurazione dell'IDP, `$IDP_HOME/conf/idp.properties`
+```
+# Regular expression matching login flows to enable, e.g. IPAddress|Password
+idp.authn.flows=MFA|RemoteUserInternal
+```
+
+- 
+Innanzitutto è necessario configurare anche la parte IDP di IDPint per fare in modo che il software di IDP possa 
+recuperare l'header dal quale ricavare il REMOTE_USER (cfr. documentazione authn/RemoteUser); in questo esempio l'header
+HTTP preso in considerazione è "spid_REMOTE_USER". Il file da modificare è `$IDP_HOME/edit-webapp/WEB-INF/web.xml` (che 
+potrebbe non esistere):
+```
+<!-- $IDP_HOME/edit-webapp/WEB-INF/web.xml -->
+
+    <!-- Spid auth delegation -->
+    <!-- Servlet protected by container used for RemoteUser authentication -->
+    <servlet>
+        <servlet-name>RemoteUserAuthHandler</servlet-name>
+        <servlet-class>net.shibboleth.idp.authn.impl.RemoteUserAuthServlet</servlet-class>
+        <init-param>
+           <!-- permette di riconoscere gli headers -->
+            <param-name>checkHeaders</param-name>
+            <param-value>spid_REMOTE_USER</param-value>
+           <!-- permette di riconoscere gli headers --> 
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RemoteUserAuthHandler</servlet-name>
+        <url-pattern>/Authn/RemoteUser</url-pattern>
+    </servlet-mapping>
+```
+
+⚠️ Attenzione! Si ricorda che a valle della modifica di un file all'interno di `$IDP_HOME/edit-webapp`, è necessario 
+effettuare il build dell'applicazione IDP mediante il lancio del comando `$IDP_HOME/bin/build.sh` e successivo riavvio 
+del container.
+
+## Reperimento degli attributi SPID dall'SP interno
+
+A valle dell'autenticazione su SPID, gli attributi SPID sono disponibili negli headers della richiesta. Per leggerli e ù
+renderli visibili come attributi all'IDP interno è possibile definire uno `ScriptedAttribute` all'interno del file 
+`$IDP_HOME/attribute-resolver.xml` nella forma:
+
+```
+    <AttributeDefinition id="spid_attr" xsi:type="ScriptedAttribute" customObjectRef="shibboleth.HttpServletRequest">
+                <AttributeEncoder xsi:type="SAML2String" name="spid_attr" friendlyName="spid_attr" />
+                <Script><![CDATA[
+                if (custom.getHeader("spid_attr_header") != ""  && custom.getHeader("spid_attr") != "(null)" ) {
+                        spid_attr.addValue(custom.getHeader("spid_attr"));
+                }
+        ]]></Script>
+    </AttributeDefinition>
+```
+
+dove `spid_attr_header` è il nome dell'header da cui leggere l'attributo e `spid_attr` è il nome da dare all'attributo 
+all'interno dell'IDP interno. Si allega un esempio per l'accesso a tutti gli attuali attributi SPID.
+
+_Nota_: nell'esempio, i nomi degli headers e degli attributi coincidono.
+
+## Rilascio degli attributi SPID
+
+Gli attributi risolti devono poi essere rilasciati secondo le policy opportune, mediante definizione del file 
+`$IDP_HOME/conf/attribute-filter.xml`
