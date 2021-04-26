@@ -33,10 +33,8 @@ javascript, in risposta alla selezione dell'IDP scelto.
 
 Per realizzare la funzionalità bisogna effettuare due operazioni:
 
-- [Customizzazione della configurazione del discovery service](#disco)
-- [Personalizzazione della vista di login dell'IDP](#view)
-
-<a name="disco"/>
+- [Customizzazione della configurazione del discovery service](#customizzazione-della-configurazione-del-discovery-service)
+- [Personalizzazione della vista di login dell'IDP](#personalizzazione-della-vista-di-login-dellidp)
 
 ### Customizzazione della configurazione del discovery service
 
@@ -45,8 +43,6 @@ La modifica necessaria va apportata al file `$DISCO_SERVICE_HOME/idpselect_confi
 ```
 this.autoFollowCookie = 'spididp' // il nome può essere variato
 ```
-
-<a name="view"/>
 
 ### Personalizzazione della vista di login dell'IDP
 
