@@ -13,7 +13,7 @@ I passi da effettuare sono i seguenti:
 - [Aggiunta del flusso di autenticazione esterna](#aggiunta-del-flusso-di-autenticazione-esterna);
 - [Reperimento degli attributi SPID dall'SP interno](#reperimento-degli-attributi-spid-dallsp-interno);
 - [Rilascio degli attributi SPID](#rilascio-degli-attributi-spid);
-- [Riconciliazione degli attributi]()
+- [Riconciliazione degli attributi](#riconciliazione-degli-attributi)
 
 ## Aggiunta del flusso di autenticazione esterna
 
