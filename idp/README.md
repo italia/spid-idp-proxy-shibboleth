@@ -13,6 +13,7 @@ I passi da effettuare sono i seguenti:
 - [Aggiunta del flusso di autenticazione esterna](#aggiunta-del-flusso-di-autenticazione-esterna);
 - [Reperimento degli attributi SPID dall'SP interno](#reperimento-degli-attributi-spid-dallsp-interno);
 - [Rilascio degli attributi SPID](#rilascio-degli-attributi-spid);
+- [Riconciliazione degli attributi]()
 
 ## Aggiunta del flusso di autenticazione esterna
 
@@ -138,3 +139,35 @@ _Nota_: nell'esempio, i nomi degli headers e degli attributi coincidono.
 
 Gli attributi risolti devono poi essere rilasciati secondo le policy opportune, mediante definizione del file 
 `$IDP_HOME/conf/attribute-filter.xml`
+
+## Riconciliazione degli attributi
+
+Nel caso in cui l'utente che effettua il login con SPID è presente anche sulla directory delle utenze interne 
+(per esempio LDAP, o DB) può essere desiderabile effettuare la riconciliazione delle utenze per fondere gli attributi 
+provenienti da SPID con quelli provenienti dalla directory.
+
+Il modo in cui questo va fatto è strettamente legato al sistema di persistenza delle utenze usato dall'ente. A titolo 
+esemplificativo, si riporta una modalità che permette di riconciliare l'utenza da LDAP sulla base di un diverso 
+attributo, a seconda del metodo usato per l'autenticazione:
+
+- _username_, nel caso di autenticazione tramite username e password;
+- _codice fiscale_, nel caso di autenticazione tramite SPID.
+
+```
+     <DataConnector id="myLDAP"
+        xsi:type="LDAPDirectory"
+        baseDN="%{ldap.baseDN}"
+        principal="%{ldap.principal}"
+        principalCredential="%{ldap.principalCredential}"
+        trustFile="%{idp.authn.LDAP.trustCertificates}"
+        ldapURL="ldaps://%{ldap.hostname}">
+        <InputAttributeDefinition ref="spid_fiscalNumber" />
+        <FilterTemplate>
+            <![CDATA[
+                 (|(uid=$resolutionContext.principal), (codFiscale=$spid_REMOTE_USER.get(0).substring(6, 22)), (codFiscale=$spid_fiscalNumber.get(0).substring(6, 22)))
+            ]]>
+        </FilterTemplate>
+    </DataConnector>
+```
+
+__Nota__: il codice fiscale per la ricerca su LDAP viene ottenuto come `$spid_REMOTE_USER.get(0).substring(6, 22))` e `$spid_fiscalNumber.get(0).substring(6, 22))`, poichè il codice fiscale fornito da SPID è nella forma `TINIT-XXXXXXXXXXXXXXXX` e pertanto i primi 6 caratteri vanno scartati, mantenendo gli ultimi 16.
