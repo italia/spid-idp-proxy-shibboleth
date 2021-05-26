@@ -10,7 +10,7 @@ Lo scenario di base prevede che un ente abbia un proprio Identity Provider sul q
 
 Il setup dimostrativo contiene i seguenti elementi:
 
-- [Shibboleth IDP](idp/README.md)
-- [Shibboleth SP](sp/README.md)
-- [Discovery Service](discovery-service/README.md)
-- [Configurazione di Apache2 con mod_shib](apache/README.md)
+- [Shibboleth IDP](idp)
+- [Shibboleth SP](sp)
+- [Discovery Service](discovery-service)
+- [Configurazione di Apache2 con mod_shib](apache)
