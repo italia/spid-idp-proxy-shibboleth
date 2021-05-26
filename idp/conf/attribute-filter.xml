@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is an EXAMPLE policy file.  While the policy presented in this
+    example file is illustrative of some simple cases, it relies on the names of
+    non-existent example services and the example attributes demonstrated in the
+    default attribute-resolver.xml file.
+
+    This example does contain some usable "general purpose" policies that may be
+    useful in conjunction with specific deployment choices, but those policies may
+    not be applicable to your specific needs or constraints.
+-->
+<AttributeFilterPolicyGroup id="ShibbolethFilterPolicy"
+                            xmlns="urn:mace:shibboleth:2.0:afp"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xsi:schemaLocation="urn:mace:shibboleth:2.0:afp http://shibboleth.net/schema/idp/shibboleth-afp.xsd">
+
+    <!-- Release SPID attributes to two specific SPs. -->
+    <AttributeFilterPolicy id="spid_attributes">
+        <PolicyRequirementRule xsi:type="OR">
+            <Rule xsi:type="Requester" value="https://sp1.it/shibboleth" />
+            <Rule xsi:type="Requester" value="https://sp2.it/shibboleth" />
+        </PolicyRequirementRule>
+
+        <AttributeRule attributeID="spid_REMOTE_USER" permitAny="true" />
+        <AttributeRule attributeID="spid_name" permitAny="true" />
+        <AttributeRule attributeID="spid_familyName" permitAny="true" />
+        <AttributeRule attributeID="spid_fiscalNumber" permitAny="true" />
+        <AttributeRule attributeID="spid_email" permitAny="true" />
+        <AttributeRule attributeID="spid_spidCode" permitAny="true" />
+        <AttributeRule attributeID="spid_gender" permitAny="true" />
+        <AttributeRule attributeID="spid_placeOfBirth" permitAny="true" />
+        <AttributeRule attributeID="spid_countyOfBirth" permitAny="true" />
+        <AttributeRule attributeID="spid_dateOfBirth" permitAny="true" />
+        <AttributeRule attributeID="spid_gender" permitAny="true" />
+        <AttributeRule attributeID="spid_digitalAddress" permitAny="true" />
+        <AttributeRule attributeID="spid_mobilePhone" permitAny="true" />
+        <AttributeRule attributeID="spid_address" permitAny="true" />
+        <AttributeRule attributeID="spid_domicileStreetAddress" permitAny="true" />
+        <AttributeRule attributeID="spid_domicilePostalCode" permitAny="true" />
+        <AttributeRule attributeID="spid_domicileMunicipality" permitAny="true" />
+        <AttributeRule attributeID="spid_domicileProvince" permitAny="true" />
+        <AttributeRule attributeID="spid_domicileNation" permitAny="true" />
+
+    </AttributeFilterPolicy>
+
+</AttributeFilterPolicyGroup>
