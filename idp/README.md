@@ -26,8 +26,6 @@ SPID.
 - Modifica della configurazione _MFA_ (file `$IDP_HOME/conf/authn/mfa-authn-config.xml`)
 
 ```
-<!-- $IDP_HOME/conf/authn/mfa-authn-config.xml -->
-
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -70,8 +68,6 @@ SPID.
 - Modifica del flusso _MFA_ (file `$IDP_HOME/conf/authn/authn-events-flow.xml`)
 
 ```
-<!-- $IDP_HOME/conf/authn/authn-events-flow.xml -->
-
     <end-state id="SPID_auth" />
 
     <global-transitions>
@@ -92,8 +88,6 @@ idp.authn.flows=MFA|RemoteUserInternal
   è `$IDP_HOME/edit-webapp/WEB-INF/web.xml` (che potrebbe non esistere):
 
 ```
-<!-- $IDP_HOME/edit-webapp/WEB-INF/web.xml -->
-
     <!-- Spid auth delegation -->
     <!-- Servlet protected by container used for RemoteUser authentication -->
     <servlet>
@@ -192,8 +186,6 @@ A tale scopo è sufficiente rimuovere dal file `$IDP_HOME/conf/relying-party.xml
 `shibboleth.DefaultRelyingParty`.
 
 ```
-<!-- $IDP_HOME/conf/relying-party.xml -->
-
 ...
 
     <bean id="shibboleth.DefaultRelyingParty" parent="RelyingParty">
